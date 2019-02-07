@@ -2,6 +2,13 @@ language: rust
 sudo: false
 rust:
   - stable
+  
+addons:
+  apt:
+    sources:
+      - deadsnakes # source required so it finds the package definition below
+    packages:
+      - python3.5
 
 env:
   global:
