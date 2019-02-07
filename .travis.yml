@@ -2,13 +2,6 @@ language: rust
 sudo: false
 rust:
   - stable
-  
-addons:
-  apt:
-    sources:
-      - deadsnakes
-    packages:
-      - python3.5
 
 env:
   global:
@@ -23,7 +16,7 @@ install:
   - export PATH=/tmp/emacs/bin:${PATH}
   - emacs --version
   # Install https://github.com/palantir/python-language-server
-  - virtualenv .
+  - virtualenv . --python=`which python3`
   - . ./bin/activate
   - pip install 'python-language-server[all]'
 
