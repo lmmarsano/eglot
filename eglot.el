@@ -78,6 +78,20 @@
   :prefix "eglot-"
   :group 'applications)
 
+(defun eglot-keyword-validate (widget)
+  "Widget validator for keywords."
+  (let ((value (widget-value widget)))
+    (unless (keywordp value)
+      (widget-put widget :error (format "%s is not a keyword symbol" value))
+      widget)))
+
+(define-widget 'eglot-keyword 'symbol
+  "A keyword Lisp symbol."
+  :tag "Keyword"
+  :match (lambda (_widget value) (keywordp value))
+  :prompt-match #'keywordp
+  :validate #'eglot-keyword-validate)
+
 (defconst eglot-server-programs-contact
   `((cons :tag "Standard I/O"
           (string :tag "Program")
@@ -89,7 +103,7 @@
                   :value 0)
           (plist :tag "TCP Parameters"
                  :inline t
-                 :key-type (symbol :tag "Keyword")))
+                 :key-type eglot-keyword))
     (cons :tag "TCP Auto-Launch"
           (string :tag "Program")
           (list (repeat :tag "Arguments"
@@ -173,7 +187,7 @@ of those modes.  CONTACT can be:
                                                   :value eglot-lsp-server-subclass)
                                           (choice :tag "Initialization"
                                                   (plist :tag "Class Initializer"
-                                                         :key-type (symbol :tag "Keyword"))
+                                                         :key-type eglot-keyword)
                                                   ,@eglot-server-programs-contact))
                                     (function :tag "Contact Function"))))
 
